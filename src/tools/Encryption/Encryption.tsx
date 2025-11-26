@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import CryptoJS from 'crypto-js';
-import { Box, Typography, TextField, Button, Stack } from '@mui/material';
+import { Box, Typography, TextField, Button, Stack, Alert } from '@mui/material';
 
 type ModeType = 'encrypt' | 'decrypt';
 
@@ -98,11 +98,11 @@ export default function Encryption() {
           />
         </Box>
 
-        {/* Error */}
+        {/* Error - Usando Alert de MUI */}
         {error && (
-          <Box sx={{ p: 2, bgcolor: '#fee', border: '1px solid #fcc', borderRadius: 1 }}>
-            <Typography color="error">{error}</Typography>
-          </Box>
+          <Alert severity="error" onClose={() => setError('')}>
+            {error}
+          </Alert>
         )}
 
         {/* Buttons */}
@@ -135,14 +135,22 @@ export default function Encryption() {
               multiline
               rows={6}
               value={result}
-              InputProps={{ readOnly: true }}
-              sx={{ bgcolor: '#f5f5f5' }}
+              InputProps={{ 
+                readOnly: true,
+                sx: { 
+                  fontFamily: 'monospace',
+                  bgcolor: 'action.hover' // ← Respeta el tema
+                }
+              }}
             />
             <Button
               variant="contained"
               color="success"
               sx={{ mt: 2 }}
-              onClick={() => navigator.clipboard.writeText(result)}
+              onClick={() => {
+                navigator.clipboard.writeText(result);
+                alert('✅ Copiado al portapapeles');
+              }}
             >
               📋 Copiar
             </Button>
